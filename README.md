@@ -190,7 +190,7 @@ Three levels. Every time you ask for a hint, it gets more specific.
 
 ```bash
 # Clone the repo
-git clone https://github.com/omar-tamerr/thoth
+git clone https://github.com/Omar-tamerr/Thoth
 cd thoth
 
 # Install (adds 'thoth' command globally)
