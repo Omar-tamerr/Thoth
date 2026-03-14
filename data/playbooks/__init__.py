@@ -1,0 +1,265 @@
+"""
+THOTH Service Playbooks
+Per-port knowledge modules with enumeration steps,
+default credentials, CVEs, and connection syntax.
+"""
+
+PLAYBOOKS = {
+    21: {
+        "name": "FTP",
+        "description": "File Transfer Protocol",
+        "default_creds": [("anonymous",""),("anonymous","anonymous"),("ftp","ftp"),("admin","admin")],
+        "cves": ["CVE-2011-2523 (vsftpd 2.3.4 backdoor)", "CVE-2010-4221 (ProFTPD)"],
+        "enum": [
+            "nmap -sV --script ftp-anon,ftp-bounce,ftp-syst {target}",
+            "ftp {target}",
+            "hydra -l anonymous -p '' ftp://{target}",
+        ],
+        "connect": "ftp {target}",
+        "notes": "Always try anonymous login first. Check for writable directories.",
+    },
+    22: {
+        "name": "SSH",
+        "description": "Secure Shell",
+        "default_creds": [("root","root"),("admin","admin"),("root","toor")],
+        "cves": ["CVE-2018-15473 (OpenSSH user enum)", "CVE-2016-6210"],
+        "enum": [
+            "nmap -sV --script ssh-auth-methods,ssh-hostkey {target}",
+            "ssh-audit {target}",
+            "hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://{target}",
+        ],
+        "connect": "ssh user@{target}",
+        "notes": "Check for weak keys, old versions. Try found credentials here.",
+    },
+    23: {
+        "name": "Telnet",
+        "description": "Telnet — plaintext remote access",
+        "default_creds": [("admin","admin"),("root","root"),("","")],
+        "cves": [],
+        "enum": [
+            "nmap -sV --script telnet-encryption,telnet-ntlm-info {target}",
+            "telnet {target}",
+        ],
+        "connect": "telnet {target}",
+        "notes": "Telnet is plaintext — sniff traffic if possible. Try default creds.",
+    },
+    25: {
+        "name": "SMTP",
+        "description": "Simple Mail Transfer Protocol",
+        "default_creds": [],
+        "cves": [],
+        "enum": [
+            "nmap -sV --script smtp-commands,smtp-enum-users {target}",
+            "nc {target} 25",
+            "smtp-user-enum -M VRFY -U /usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt -t {target}",
+        ],
+        "connect": "nc {target} 25",
+        "notes": "Enumerate users with VRFY/EXPN commands. Check for open relay.",
+    },
+    53: {
+        "name": "DNS",
+        "description": "Domain Name System",
+        "default_creds": [],
+        "cves": [],
+        "enum": [
+            "nmap -sV --script dns-zone-transfer {target}",
+            "dig axfr @{target} domain.com",
+            "dnsrecon -d {target} -t axfr",
+            "dnsenum {target}",
+        ],
+        "connect": "dig @{target}",
+        "notes": "Try zone transfer (AXFR). Enumerate subdomains.",
+    },
+    80: {
+        "name": "HTTP",
+        "description": "Web server",
+        "default_creds": [("admin","admin"),("admin","password"),("admin","")],
+        "cves": [],
+        "enum": [
+            "gobuster dir -u http://{target} -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt",
+            "nikto -h http://{target}",
+            "whatweb http://{target}",
+            "curl -I http://{target}",
+            "ffuf -u http://{target}/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt",
+        ],
+        "connect": "curl http://{target}",
+        "notes": "Check robots.txt, sitemap.xml. Look for CMS (WordPress, Drupal). Try default creds on login pages.",
+    },
+    110: {
+        "name": "POP3",
+        "description": "Post Office Protocol v3",
+        "default_creds": [],
+        "cves": [],
+        "enum": [
+            "nmap -sV --script pop3-capabilities,pop3-ntlm-info {target}",
+            "nc {target} 110",
+        ],
+        "connect": "nc {target} 110",
+        "notes": "Try USER/PASS with found credentials. Enumerate mailboxes.",
+    },
+    139: {
+        "name": "NetBIOS/SMB",
+        "description": "NetBIOS over TCP",
+        "default_creds": [("",""),("guest",""),("anonymous","")],
+        "cves": ["CVE-2017-0144 (EternalBlue)", "CVE-2007-2447 (Samba usermap)"],
+        "enum": [
+            "nmap -sV --script smb-vuln* {target}",
+            "enum4linux -a {target}",
+            "smbclient -L //{target} -N",
+            "crackmapexec smb {target}",
+        ],
+        "connect": "smbclient //{target}/share -N",
+        "notes": "Enumerate shares, users, OS info. Check for null sessions.",
+    },
+    443: {
+        "name": "HTTPS",
+        "description": "Secure web server",
+        "default_creds": [("admin","admin"),("admin","password")],
+        "cves": ["CVE-2014-0160 (Heartbleed)", "CVE-2014-3566 (POODLE)"],
+        "enum": [
+            "gobuster dir -u https://{target} -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -k",
+            "nikto -h https://{target} -ssl",
+            "sslscan {target}",
+            "testssl.sh {target}",
+        ],
+        "connect": "curl -k https://{target}",
+        "notes": "Check SSL/TLS version. Look for certificate info (subdomains). Same as HTTP checks.",
+    },
+    445: {
+        "name": "SMB",
+        "description": "Server Message Block",
+        "default_creds": [("",""),("guest",""),("administrator","")],
+        "cves": [
+            "CVE-2017-0144 (EternalBlue / MS17-010)",
+            "CVE-2007-2447 (Samba usermap_script)",
+            "CVE-2020-0796 (SMBGhost)",
+        ],
+        "enum": [
+            "nmap -sV --script smb-vuln*,smb-enum-shares,smb-enum-users {target}",
+            "smbclient -L //{target} -N",
+            "enum4linux -a {target}",
+            "crackmapexec smb {target} --shares",
+            "smbmap -H {target}",
+        ],
+        "connect": "smbclient //{target}/share -N",
+        "notes": "Check for EternalBlue (MS17-010) if Windows. Check for null sessions. List all shares.",
+    },
+    1433: {
+        "name": "MSSQL",
+        "description": "Microsoft SQL Server",
+        "default_creds": [("sa",""),("sa","sa"),("sa","password")],
+        "cves": [],
+        "enum": [
+            "nmap -sV --script ms-sql-info,ms-sql-config,ms-sql-empty-password {target}",
+            "crackmapexec mssql {target} -u sa -p sa",
+            "sqsh -S {target} -U sa",
+        ],
+        "connect": "sqsh -S {target} -U sa -P password",
+        "notes": "Try empty password for sa. Check xp_cmdshell for RCE.",
+    },
+    2049: {
+        "name": "NFS",
+        "description": "Network File System",
+        "default_creds": [],
+        "cves": [],
+        "enum": [
+            "showmount -e {target}",
+            "nmap -sV --script nfs-showmount,nfs-ls,nfs-statfs {target}",
+        ],
+        "connect": "mount -t nfs {target}:/share /mnt/nfs",
+        "notes": "List exports with showmount. Check for no_root_squash option.",
+    },
+    3306: {
+        "name": "MySQL",
+        "description": "MySQL Database",
+        "default_creds": [("root",""),("root","root"),("root","password")],
+        "cves": ["CVE-2012-2122 (auth bypass)"],
+        "enum": [
+            "nmap -sV --script mysql-empty-password,mysql-info,mysql-databases {target}",
+            "mysql -h {target} -u root",
+            "hydra -l root -P /usr/share/wordlists/rockyou.txt mysql://{target}",
+        ],
+        "connect": "mysql -h {target} -u root -p",
+        "notes": "Try empty root password. Enumerate databases: SHOW DATABASES; Check for UDF exploitation.",
+    },
+    3389: {
+        "name": "RDP",
+        "description": "Remote Desktop Protocol",
+        "default_creds": [("administrator",""),("administrator","administrator")],
+        "cves": ["CVE-2019-0708 (BlueKeep)", "CVE-2019-1182 (DejaBlue)"],
+        "enum": [
+            "nmap -sV --script rdp-enum-encryption,rdp-vuln-ms12-020 {target}",
+            "rdesktop {target}",
+        ],
+        "connect": "rdesktop {target}",
+        "notes": "Check for BlueKeep if unpatched. Try found credentials.",
+    },
+    5432: {
+        "name": "PostgreSQL",
+        "description": "PostgreSQL Database",
+        "default_creds": [("postgres",""),("postgres","postgres")],
+        "cves": [],
+        "enum": [
+            "nmap -sV --script pgsql-brute {target}",
+            "psql -h {target} -U postgres",
+        ],
+        "connect": "psql -h {target} -U postgres",
+        "notes": "Try empty password. Check for COPY TO/FROM for file read/write.",
+    },
+    5900: {
+        "name": "VNC",
+        "description": "Virtual Network Computing",
+        "default_creds": [("",""),("admin","admin")],
+        "cves": [],
+        "enum": [
+            "nmap -sV --script vnc-info,vnc-brute {target}",
+            "vncviewer {target}",
+        ],
+        "connect": "vncviewer {target}",
+        "notes": "Try no password. Brute force with hydra.",
+    },
+    6379: {
+        "name": "Redis",
+        "description": "Redis in-memory database",
+        "default_creds": [("","")],
+        "cves": [],
+        "enum": [
+            "redis-cli -h {target} ping",
+            "redis-cli -h {target} info",
+            "nmap -sV --script redis-info {target}",
+        ],
+        "connect": "redis-cli -h {target}",
+        "notes": "No auth by default. Check CONFIG GET dir, CONFIG GET dbfilename. Can write SSH keys.",
+    },
+    8080: {
+        "name": "HTTP-Alt",
+        "description": "Alternative HTTP port",
+        "default_creds": [("admin","admin"),("tomcat","tomcat"),("manager","manager")],
+        "cves": [],
+        "enum": [
+            "gobuster dir -u http://{target}:8080 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt",
+            "curl -I http://{target}:8080",
+            "whatweb http://{target}:8080",
+        ],
+        "connect": "curl http://{target}:8080",
+        "notes": "Often Tomcat, Jenkins, or custom apps. Check /manager/html for Tomcat.",
+    },
+    27017: {
+        "name": "MongoDB",
+        "description": "MongoDB NoSQL database",
+        "default_creds": [("","")],
+        "cves": [],
+        "enum": [
+            "mongo {target}",
+            "nmap -sV --script mongodb-info,mongodb-databases {target}",
+        ],
+        "connect": "mongo {target}",
+        "notes": "No auth by default. show dbs; use db; show collections; db.collection.find()",
+    },
+}
+
+def get_playbook(port):
+    return PLAYBOOKS.get(int(port))
+
+def get_all_ports():
+    return list(PLAYBOOKS.keys())

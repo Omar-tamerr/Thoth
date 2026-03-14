@@ -1,0 +1,18 @@
+# THOTH — CTF AI Mentor
+# Zero external dependencies for core features
+# Only standard library + optional tools
+
+# No pip packages required!
+# THOTH uses only Python standard library:
+#   - sqlite3   (sessions & notes)
+#   - urllib    (API calls & web scraping)
+#   - subprocess (nmap, searchsploit)
+#   - json, re, os, sys, shutil, datetime
+
+# Optional system tools (install separately):
+#   sudo apt install nmap searchsploit
+#   pip install searchsploit  (or: apt install exploitdb)
+
+# AI (free):
+#   Get a free Groq API key at https://console.groq.com
+#   Then: thoth config groq_api_key gsk_your_key_here
