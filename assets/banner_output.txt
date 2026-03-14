@@ -1,0 +1,45 @@
+
+                     [1m[97m𓂀[0m[90m  𓃭  𓆣  𓇋  𓈖  𓉐  𓊃  𓋴  𓌀  𓍿  𓎛  𓏏  [0m[1m[97m𓂀[0m
+
+                           [90m         .·´¯`·.         [0m
+                           [90m       ·´         `·     [0m
+                            [2m[97m      /    𓂀   𓃭    \   [0m
+                           [1m[97m     |   ──────────  |   [0m
+                            [2m[97m      \    𓂀   𓃭    /   [0m
+                           [90m       `·.         .·´   [0m
+                           [90m           `·._.·´       [0m
+
+                  [1m[95m ████████╗██╗  ██╗ ██████╗ ████████╗██╗  ██╗[0m
+                  [1m[97m    ██╔══╝██║  ██║██╔═══██╗╚══██╔══╝██║  ██║[0m
+                  [1m[96m    ██║   ███████║██║   ██║   ██║   ███████║[0m
+                  [1m[97m    ██║   ██╔══██║██║   ██║   ██║   ██╔══██║[0m
+                  [1m[95m    ██║   ██║  ██║╚██████╔╝   ██║   ██║  ██║[0m
+                  [2m[97m    ╚═╝   ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝[0m
+
+              [1m[95mCTF AI Mentor[0m  [90m·[0m  [1m[97mLearn. Solve. Grow.[0m  [90m·[0m  [1m[96mAI-Powered[0m
+
+                     [90m──────────[0m[2m[97m  𓃭 𓆣 𓇋 𓈖 𓉐 𓊃 𓋴  [0m[90m──────────[0m
+
+  [1m[96mCTF AI Mentor[0m[90m  ·  [0m[90mv1.0.0[0m[90m  ·  [0m[1m[97mAll CTF Platforms[0m[90m  ·  [0m[1m[95mAI-Powered[0m[90m  ·  [0m[1m[93mExploitDB[0m
+
+        [90mMade with [0m[1m[91m♥[0m[90m by [0m[1m[97mOmar Tamer[0m[90m  ·  [0m[1m[93mEG[0m[90m  ·  [0m[2m[97mgithub.com/omartamer/thoth[0m
+
+                 [90m──────────────────────────────────────────────[0m
+
+             [1m[97mthoth new[0m[90m  ·  [0m[1m[97mthoth scan[0m[90m  ·  [0m[1m[97mthoth hint[0m[90m  ·  [0m[1m[97mthoth help[0m
+
+                     [1m[97m𓂀[0m[90m  𓃭  𓆣  𓇋  𓈖  𓉐  𓊃  𓋴  𓌀  𓍿  𓎛  𓏏  [0m[1m[97m𓂀[0m
+
+
+[1m[93m  𓂀  THOTH First-Run Setup[0m
+[90m  ─────────────────────────────────────────[0m
+
+[97m  THOTH needs a free Groq API key for AI features.[0m
+[90m  Groq is 100% free — no credit card required.[0m
+
+[1m[97m  1.[0m[90m Go to: [0m[96mhttps://console.groq.com[0m
+[1m[97m  2.[0m[90m Sign up with Google or email[0m
+[1m[97m  3.[0m[90m Click API Keys -> Create API Key[0m
+[1m[97m  4.[0m[90m Paste it below (starts with gsk_...)[0m
+
+[90m  Paste key here (Enter to skip): [0m

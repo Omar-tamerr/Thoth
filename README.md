@@ -23,6 +23,12 @@
 
 </div>
 
+<div align="center">
+
+![THOTH Banner](assets/01_banner.png)
+
+</div>
+
 ---
 
 ## What is THOTH?
@@ -55,6 +61,10 @@ THOTH: Three likely reasons on this box:
 This is not a generic answer. THOTH knows you're on TryHackMe, knows your tun0 IP, knows you've been on foothold for 25 minutes. The AI adapts to you — not the other way around.
 
 **AI commands:**
+
+
+![THOTH AI Chat](assets/06_ai.png)
+
 
 ```bash
 thoth hint                          # progressive hint — nudge → clue → near-solution
@@ -102,7 +112,16 @@ $ thoth hint         ← run again for deeper hint
   Look at the HTML source — there is something hidden there.
 ```
 
-Three levels. Every time you ask for a hint, it gets more specific. The full solution is never shown unless you unlock it yourself. **You learn. You don't just copy.**
+Three levels. Every time you ask for a hint, it gets more specific.
+
+
+![THOTH Hint Engine](assets/02_hint.png)
+
+ The full solution is never shown unless you unlock it yourself. **You learn. You don't just copy.**
+
+
+![THOTH Scan + ExploitDB](assets/03_scan.png)
+
 
 ---
 
@@ -161,6 +180,10 @@ Three levels. Every time you ask for a hint, it gets more specific. The full sol
 </tr>
 </table>
 
+
+![THOTH Library](assets/04_library.png)
+
+
 ---
 
 ## Installation
@@ -191,6 +214,10 @@ python3 thoth.py
 thoth config groq_api_key gsk_your_key_here
 # 3. Done — all AI features are now active
 ```
+
+
+![THOTH Stats Dashboard](assets/05_stats.png)
+
 
 ---
 
